@@ -108,16 +108,8 @@ void EVENT_USB_Device_Disconnect(void)
  */
 void EVENT_USB_Device_ConfigurationChanged(void)
 {
-	/* Setup Keyboard Keycode Report Endpoint */
-	Endpoint_ConfigureEndpoint(IN_EP, EP_TYPE_BULK,
-								ENDPOINT_DIR_IN, IN_EP_SIZE,
-								ENDPOINT_BANK_SINGLE);
-
-	/* Setup Keyboard LED Report Endpoint */
-	Endpoint_ConfigureEndpoint(OUT_EP, EP_TYPE_BULK,
-								ENDPOINT_DIR_OUT, OUT_EP_SIZE,
-								ENDPOINT_BANK_SINGLE);
-
+	Endpoint_ConfigureEndpoint(IN_EP, EP_TYPE_BULK, IN_EP_SIZE, 1);
+	Endpoint_ConfigureEndpoint(OUT_EP, EP_TYPE_BULK, OUT_EP_SIZE, 1);
 
 	// pull lines TRST and SRST high
 	jtag_init();
@@ -155,7 +147,7 @@ void JTAG_Task(void)
 #ifdef DEBUG
 			printf("Sending to host :%d \r\n",dataToHostSize);
 #endif //DEBUG
-			Endpoint_Write_Stream_LE(dataToHost,dataToHostSize);
+			Endpoint_Write_Stream_LE(dataToHost, dataToHostSize, NULL);
 
 			/* Handshake the IN Endpoint - send the data to the host */
 			Endpoint_ClearIN();
@@ -167,11 +159,11 @@ void JTAG_Task(void)
 
 		if(Endpoint_IsReadWriteAllowed())
 		{
-			dataFromHostSize = Endpoint_Read_Word_LE();
+			dataFromHostSize = Endpoint_Read_16_LE();
 #ifdef DEBUG
 			printf("Data :%d ",dataFromHostSize);
 #endif //DEBUG
-			Endpoint_Read_Stream_LE(dataFromHost, dataFromHostSize);
+			Endpoint_Read_Stream_LE(dataFromHost, dataFromHostSize, NULL);
 			Endpoint_ClearOUT();
 
 			if(dataFromHostSize>0)

@@ -20,8 +20,8 @@
 		#include <avr/pgmspace.h>
 
 	/* Macros: */
-		#define IN_EP                       1
-		#define OUT_EP                      2
+		#define IN_EP                       (ENDPOINT_DIR_IN | 1)
+		#define OUT_EP                      (ENDPOINT_DIR_OUT | 2)
 		#define IN_EP_SIZE                  64
 		#define OUT_EP_SIZE                 64
 
