@@ -1,5 +1,5 @@
 /*
-		opendous_jtag version 0.2 by Vladimir S. Fonov with improvements from
+    opendous_jtag version 0.2 by Vladimir S. Fonov with improvements from
     eStick-jtag, by Cahya Wirawan <cahya@gmx.at>
     Based on opendous-jtag by Vladimir Fonov and LUFA demo applications by Dean Camera and Denver Gingerich.
     Released under the MIT Licence.
