@@ -1,6 +1,6 @@
 /*
 		opendous_jtag version 0.2 by Vladimir S. Fonov with improvements from
-    eStick-jtag, by Cahya Wirawan <cahya@gmx.at> 
+    eStick-jtag, by Cahya Wirawan <cahya@gmx.at>
     Based on opendous-jtag by Vladimir Fonov and LUFA demo applications by Dean Camera and Denver Gingerich.
     Released under the MIT Licence.
 */
@@ -22,7 +22,7 @@
 	/* Macros: */
 
 	/* Type Defines: */
-	
+
 	#define OPENDOUS_USB_BUFFER_OFFSET 2
 	#define OPENDOUS_IN_BUFFER_SIZE	  (OPENDOUS_USB_BUFFER_SIZE)
 	#define OPENDOUS_OUT_BUFFER_SIZE  (OPENDOUS_USB_BUFFER_SIZE)

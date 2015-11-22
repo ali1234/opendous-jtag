@@ -1,7 +1,7 @@
 /*
              LUFA Library
      Copyright (C) Dean Camera, 2008.
-              
+
   dean [at] fourwalledcubicle [dot] com
       www.fourwalledcubicle.com
 
@@ -15,9 +15,9 @@
 
 /** \file
  *
- *  USB Device Descriptors, for library use when in USB device mode. Descriptors are special 
+ *  USB Device Descriptors, for library use when in USB device mode. Descriptors are special
  *  computer-readable structures which the host requests upon device enumeration, to determine
- *  the device's capabilities and functions.  
+ *  the device's capabilities and functions.
  */
 
 #include "Descriptors.h"
@@ -27,19 +27,19 @@
  *  number of device configurations. The descriptor is read out by the USB host when the enumeration
  *  process begins.
  */
- 
- 
+
+
 USB_Descriptor_Device_t PROGMEM DeviceDescriptor =
 {
 	.Header                 = {.Size = sizeof(USB_Descriptor_Device_t), .Type = DTYPE_Device},
-		
+
 	.USBSpecification       = VERSION_BCD(01.10),
 	.Class                  = 0x02,
 	.SubClass               = 0x00,
 	.Protocol               = 0x00,
-				
+
 	.Endpoint0Size          = FIXED_CONTROL_ENDPOINT_SIZE,
-	
+
 #ifdef ESTICK
 	.VendorID              = 0x1781,
 	.ProductID             = 0xC0C0,
@@ -47,13 +47,13 @@ USB_Descriptor_Device_t PROGMEM DeviceDescriptor =
 #else //OPENDOUS
 	.VendorID              = 0x03EB,
 	.ProductID             = 0x204F,
-	.ReleaseNumber         = 0x0001,	
-#endif 
-		
+	.ReleaseNumber         = 0x0001,
+#endif
+
 	.ManufacturerStrIndex   = 0x01,
 	.ProductStrIndex        = 0x02,
 	.SerialNumStrIndex      = USE_INTERNAL_SERIAL,
-		
+
 	.NumberOfConfigurations = FIXED_NUM_CONFIGURATIONS
 };
 
@@ -65,56 +65,56 @@ USB_Descriptor_Device_t PROGMEM DeviceDescriptor =
 
 USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor =
 {
-		.Config = 
+		.Config =
 		{
-			.Header                 = 
-				{.Size = sizeof(USB_Descriptor_Configuration_Header_t), 
+			.Header                 =
+				{.Size = sizeof(USB_Descriptor_Configuration_Header_t),
 				 .Type = DTYPE_Configuration},
 
 			.TotalConfigurationSize = sizeof(USB_Descriptor_Configuration_t),
 			.TotalInterfaces        = 1,
-				
+
 			.ConfigurationNumber    = 1,
 			.ConfigurationStrIndex  = NO_DESCRIPTOR,
-				
+
 			.ConfigAttributes       = (USB_CONFIG_ATTR_BUSPOWERED | USB_CONFIG_ATTR_SELFPOWERED),
-			
+
 			.MaxPowerConsumption    = USB_CONFIG_POWER_MA(100)
 		},
-		
-		.Interface = 
+
+		.Interface =
 		{
-			.Header                 = {.Size = sizeof(USB_Descriptor_Interface_t), 
+			.Header                 = {.Size = sizeof(USB_Descriptor_Interface_t),
 			                           .Type = DTYPE_Interface},
 
 			.InterfaceNumber        = 0,
 			.AlternateSetting       = 0,
-			
+
 			.TotalEndpoints         = 2,
-				
+
 			.Class                  = 0xff,
 			.SubClass               = 0x00,
 			.Protocol               = 0x00,
-				
+
 			.InterfaceStrIndex      = NO_DESCRIPTOR
 		},
-		
-		.DataOutEndpoint = 
+
+		.DataOutEndpoint =
 		{
-			.Header                 = {.Size = sizeof(USB_Descriptor_Endpoint_t), 
+			.Header                 = {.Size = sizeof(USB_Descriptor_Endpoint_t),
 			                           .Type = DTYPE_Endpoint},
-										 
+
 			.EndpointAddress        = (ENDPOINT_DESCRIPTOR_DIR_OUT | OUT_EP),
 			.Attributes             = (EP_TYPE_BULK | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
 			.EndpointSize           = IN_EP_SIZE,
 			.PollingIntervalMS      = 0x00
 		},
-		
-		.DataInEndpoint = 
+
+		.DataInEndpoint =
 		{
-			.Header                 = {.Size = sizeof(USB_Descriptor_Endpoint_t), 
+			.Header                 = {.Size = sizeof(USB_Descriptor_Endpoint_t),
 			                           .Type = DTYPE_Endpoint},
-										 
+
 			.EndpointAddress        = (ENDPOINT_DESCRIPTOR_DIR_IN | IN_EP),
 			.Attributes             = (EP_TYPE_BULK | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
 			.EndpointSize           = OUT_EP_SIZE,
@@ -129,7 +129,7 @@ USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor =
 USB_Descriptor_String_t PROGMEM LanguageString =
 {
 	.Header                 = {.Size = USB_STRING_LEN(1), .Type = DTYPE_String},
-		
+
 	.UnicodeString          = {LANGUAGE_ID_ENG}
 };
 
@@ -140,7 +140,7 @@ USB_Descriptor_String_t PROGMEM LanguageString =
 USB_Descriptor_String_t PROGMEM ManufacturerString =
 {
 	.Header                 = {.Size = USB_STRING_LEN(7), .Type = DTYPE_String},
-		
+
 	.UnicodeString          = L"Ilmarin"
 };
 
@@ -151,7 +151,7 @@ USB_Descriptor_String_t PROGMEM ManufacturerString =
 USB_Descriptor_String_t PROGMEM ProductString =
 {
 	.Header                 = {.Size = USB_STRING_LEN(12), .Type = DTYPE_String},
-		
+
 	.UnicodeString          = L"opendous-jtag"
 };
 
@@ -175,7 +175,7 @@ uint16_t CALLBACK_USB_GetDescriptor(const uint16_t wValue, const uint8_t wIndex,
 			Address = (void*)&DeviceDescriptor;
 			Size    = sizeof(USB_Descriptor_Device_t);
 			break;
-		case DTYPE_Configuration: 
+		case DTYPE_Configuration:
 			Address = (void*)&ConfigurationDescriptor;
 			Size    = sizeof(USB_Descriptor_Configuration_t);
 			break;
@@ -195,10 +195,10 @@ uint16_t CALLBACK_USB_GetDescriptor(const uint16_t wValue, const uint8_t wIndex,
 					Size    = pgm_read_byte(&ProductString.Header.Size);
 					break;
 			}
-			
+
 			break;
 	}
-	
+
 	*DescriptorAddress = Address;
 	return Size;
 }

@@ -1,6 +1,6 @@
 /*
 		opendous-jtag by Vladimir S. Fonov, based on
-    eStick-jtag, by Cahya Wirawan <cahya@gmx.at> 
+    eStick-jtag, by Cahya Wirawan <cahya@gmx.at>
     Based on opendous-jtag by Vladimir Fonov and LUFA demo applications by Dean Camera and Denver Gingerich.
     Released under the MIT Licence.
 */
@@ -37,12 +37,12 @@ int main(void)
 	clock_prescale_set(clock_div_1);
 
   jtag_init();
-  
+
   //DEBUG
 #ifdef DEBUG
   SerialStream_Init(9600,0);
 #endif //DEBUG
-  
+
 	// initialize the send and receive buffers
 	uint16_t i = 0;
 	for (i = 0; i < OPENDOUS_OUT_BUFFER_SIZE; i++) {
@@ -118,13 +118,13 @@ void EVENT_USB_Device_ConfigurationChanged(void)
 								ENDPOINT_DIR_OUT, OUT_EP_SIZE,
 								ENDPOINT_BANK_SINGLE);
 
-  
+
   // pull lines TRST and SRST high
   jtag_init();
 #ifdef DEBUG
 	printf("Starting OPENDOUS-conf changed\r\n");
 #endif //DEBUG
-  
+
 }
 
 
@@ -141,7 +141,7 @@ void EVENT_USB_Device_UnhandledControlRequest(void)
 }
 
 void JTAG_Task(void)
-{	
+{
 	if (USB_DeviceState != DEVICE_STATE_Configured)
 	  return;
 
@@ -156,10 +156,10 @@ void JTAG_Task(void)
 			printf("Sending to host :%d \r\n",dataToHostSize);
 #endif //DEBUG
       Endpoint_Write_Stream_LE(dataToHost,dataToHostSize);
-    
+
       /* Handshake the IN Endpoint - send the data to the host */
       Endpoint_ClearIN();
-      
+
       dataToHostSize=0;
     }
 
@@ -175,17 +175,17 @@ void JTAG_Task(void)
 		  Endpoint_ClearOUT();
 
 		  if(dataFromHostSize>0)
-      {        
+      {
         //first byte is always the command
         dataFromHostSize--;
-        
+
         dataToHostSize=0;
-        
-        switch( dataFromHost[0] &JTAG_CMD_MASK ) 
+
+        switch( dataFromHost[0] &JTAG_CMD_MASK )
         {
-          
+
         case JTAG_CMD_TAP_OUTPUT:
-          
+
 #ifdef DEBUG
 					printf("JTAG_CMD_TAP_OUTPUT\r\n ");
 #endif //DEBUG
@@ -198,7 +198,7 @@ void JTAG_Task(void)
           else
             dataToHostSize= jtag_tap_output_max_speed( &dataFromHost[1] , dataFromHostSize, dataToHost);
           break;
-          
+
         case JTAG_CMD_TAP_OUTPUT_EMU:
 #ifdef DEBUG
 					printf("JTAG_CMD_TAP_OUTPUT_EMU\r\n ");
@@ -206,11 +206,11 @@ void JTAG_Task(void)
           dataFromHostSize*=4;
           if(dataFromHost[0]&JTAG_DATA_MASK)
             dataFromHostSize-=(4- ((dataFromHost[0]&JTAG_DATA_MASK)>>4));
-          
+
           dataToHostSize=jtag_tap_output_emu(&dataFromHost[1], dataFromHostSize, dataToHost);
-          
+
           break;
-          
+
         case JTAG_CMD_READ_INPUT:
 #ifdef DEBUG
 					printf("JTAG_CMD_READ_INPUT\r\n ");
@@ -218,7 +218,7 @@ void JTAG_Task(void)
           dataToHost[0]=jtag_read_input();
           dataToHostSize=1;
           break;
-        
+
         case JTAG_CMD_SET_SRST:
 #ifdef DEBUG
 					printf("JTAG_CMD_SET_SRST\r\n ");
@@ -227,7 +227,7 @@ void JTAG_Task(void)
           dataToHost[0]=0;//TODO: what to output here?
           dataToHostSize=1;
           break;
-        
+
         case JTAG_CMD_SET_TRST:
 #ifdef DEBUG
 					printf("JTAG_CMD_SET_TRST\r\n ");
@@ -236,7 +236,7 @@ void JTAG_Task(void)
           dataToHost[0]=0;//TODO: what to output here?
           dataToHostSize=1;
           break;
-        
+
         case JTAG_CMD_SET_DELAY:
 #ifdef DEBUG
 					printf("JTAG_CMD_SET_DELAY\r\n ");
@@ -259,7 +259,7 @@ void JTAG_Task(void)
 #endif //DEBUG
 					dataToHostSize=jtag_read_config(&dataToHost[0]);
 					break;
-					
+
         default: //REPORT ERROR?
 #ifdef DEBUG
 					printf("Unknown command\r\n ");
