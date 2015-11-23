@@ -29,6 +29,7 @@ volatile uint8_t resetJtagTransfers=0;
  */
 int main(void)
 {
+	cli();
 	/* Disable watchdog if enabled by bootloader/fuses */
 	MCUSR &= ~(1 << WDRF);
 	wdt_disable();
@@ -62,6 +63,7 @@ int main(void)
 #ifdef DEBUG
 	printf("Starting OPENDOUS-jtag\r\n");
 #endif //DEBUG
+	sei();
 	while(1)
 	{
 		JTAG_Task();
