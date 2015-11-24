@@ -17,7 +17,7 @@ F_USB        = $(F_CPU)
 OPTIMIZATION = s
 TARGET       = opendous
 SRC          = opendous-jtag.c jtag_functions.c Descriptors.c $(LUFA_SRC_USB)
-LUFA_PATH    = ../lufa-LUFA-120730/LUFA
+LUFA_PATH    = ../LUFA-151115/LUFA
 CC_FLAGS     = -DUSE_LUFA_CONFIG_HEADER -DESTICK
 LD_FLAGS     =
 
